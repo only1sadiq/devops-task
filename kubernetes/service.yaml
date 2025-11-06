@@ -1,0 +1,13 @@
+# kubernetes/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-app-service
+spec:
+  # Use type LoadBalancer to create a public-facing AWS Load Balancer
+  type: LoadBalancer
+  ports:
+  - port: 80       # The port the service will be exposed on
+    targetPort: 8080 # The port the container is running on (from your Dockerfile)
+  selector:
+    app: my-app  # Selects the pods from your Deployment

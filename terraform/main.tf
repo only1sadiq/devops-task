@@ -1,5 +1,14 @@
 # terraform/main.tf
 
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0" # This locks it to 5.x and prevents the 6.x break
+    }
+  }
+}
+
 # Configure the AWS provider
 provider "aws" {
   region = var.aws_region
@@ -28,20 +37,26 @@ module "vpc" {
 }
 
 # Create the EKS Cluster
+# terraform/main.tf
+
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "19.16.0" # Use a specific version
+  version = "19.16.0" 
 
   cluster_name    = var.cluster_name
-  cluster_version = "1.28" # Specify Kubernetes version
+  cluster_version = "1.28"
 
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
 
-  # Define the node group (the EC2 instances for your pods)
+  # --- ADD THESE TWO LINES ---
+  cluster_endpoint_public_access      = true
+  cluster_endpoint_public_access_cidrs = ["0.0.0.0/0"]
+  # ---------------------------
+
   eks_managed_node_groups = {
     default_node_group = {
-      instance_types = ["t3.small"] # Small, cheap instances
+      instance_types = ["t3.small"] 
       min_size     = 1
       max_size     = 3
       desired_size = 2

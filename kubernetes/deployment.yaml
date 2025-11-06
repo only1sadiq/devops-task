@@ -1,0 +1,21 @@
+# kubernetes/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app-deployment
+spec:
+  replicas: 2  # Run 2 copies of the app for high availability
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+      - name: my-app
+        # IMPORTANT: Change this to your Docker Hub image!
+        image: docker1sadiq/my-app:v1.0 
+        ports:
+        - containerPort: 8080

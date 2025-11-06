@@ -1,0 +1,14 @@
+# .gitignore
+
+# Terraform files
+.terraform/
+*.tfstate
+*.tfstate.backup
+crash.log
+*.tfvars
+
+# Mac files
+.DS_Store
+
+# IDE files
+.vscode/
